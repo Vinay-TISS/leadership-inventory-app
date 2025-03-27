@@ -192,6 +192,8 @@ if st.button("✅ Submit Exam"):
 
     pdf = FPDF()
     pdf.add_page()
+    pdf.image("download.png", x=10, y=8, w=40)  # Add Castrol logo at top-left
+    pdf.ln(25)  # Adds space below the logo
     pdf.set_font("Arial", 'B', 16)
     pdf.set_text_color(0, 102, 204)
     pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
