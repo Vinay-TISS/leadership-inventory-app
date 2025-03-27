@@ -138,31 +138,19 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- WELCOME MESSAGE ---
-if 'page' not in st.session_state:
-    st.session_state.page = 'welcome'
-
-if st.session_state.page == 'welcome':
-    st.image("download.png", width=150)
-    st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
-    st.markdown("""
-        Welcome! This tool helps you discover your dominant leadership style.  
-        Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile  
-        and a downloadable report with insights.
-    """)
-
-    if st.button("🚀 Start the Leadership Quiz"):
-        st.session_state.page = 'quiz'
-
-    st.stop()
-    
-# --- LOGO + TITLE ---
-st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+# --- WELCOME MESSAGE (without start button, directly info) ---
 st.image("download.png", width=150)
 st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("""
+    Welcome! This tool helps you discover your dominant leadership style.  
+    Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile  
+    and a downloadable report with insights.
+""")
 
-# --- USER DETAILS ---
+# Clear visible spacing
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# --- USER DETAILS (Appears Directly Below with Distance) ---
 st.markdown("### 👤 Participant Information")
 name = st.text_input("Your Name")
 email = st.text_input("Your Email")
@@ -171,6 +159,8 @@ password = st.text_input("Enter Access Password", type="password")
 if password != "leader2024":
     st.warning("Please enter a valid password to begin.")
     st.stop()
+
+st.markdown("---")
 
 # --- QUESTIONS ---
 questions_df = load_questions()
