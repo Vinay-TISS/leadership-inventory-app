@@ -44,61 +44,78 @@ def load_questions():
 # Full leadership styles dictionary preserved
 # Leadership styles dictionary is defined here...
 def get_leadership_styles():
-    return {
-        "Visionary/Authoritative": """You lead by painting a clear and inspiring vision of the future.
-You naturally say, 'Come with me' — inviting others to follow your lead with confidence.
-You thrive in situations where a new direction or big-picture clarity is needed.
-You are high in self-confidence and empathy, helping people feel connected to the bigger purpose.
-You act as a change catalyst, bringing energy and inspiration to transformation.
-You’re skilled at drawing others into your ideas and aligning them with shared goals.
-Your presence creates strong positivity and long-term motivation in teams.
-Great job, leader — this is one of the most powerful and uplifting leadership styles!""",
-        "Coaching": """You focus on developing people and helping them grow over the long term.
-You encourage others with a mindset of 'Try it' — creating a safe space to experiment and learn.
-You believe in open exploration when it comes to solving problems and reaching goals.
-You demonstrate strong empathy, self-awareness, and a genuine interest in others’ growth.
-You’re skilled at asking questions, offering guidance, and unlocking potential in your team.
-You see mistakes as learning opportunities, not failures.
-Your leadership is especially impactful in environments that value long-term development and individual growth.
-Well done, coach — your strength lies in growing future leaders!""",
-        "Affiliative": """You prioritize emotional bonds, team harmony, and well-being above all.
-You lead with the belief that 'People come first', and it shows in your relationships.
-You demonstrate strong empathy and communication skills, making people feel seen and heard.
-You excel at rebuilding trust, especially after conflicts or tough transitions.
-You create a safe, supportive environment where individuals feel valued and included.
-Your leadership is especially powerful when the team needs to heal, reconnect, or reignite motivation.
-While not highly goal-focused, you bring people together with emotional intelligence and care.
-To stay effective long-term, you ensure that team harmony supports progress, not replaces it.
-Great work — your warmth and connection-building are at the heart of strong, resilient teams.""",
-        "Democratic": """You lead by building consensus through participation and collaboration.
-You often ask 'What do you think?', inviting ideas and encouraging open dialogue.
-You demonstrate strong team leadership, communication, and a spirit of inclusion.
-You create a culture where people feel heard, valued, and involved in decision-making.
-Your approach helps build deep ownership and commitment to shared goals.
-You’re especially effective in environments where trust, transparency, and team input are valued.
-While your style may slow things down early on, it pays off once team momentum builds.
-You ensure that key stakeholders — especially senior leaders — are aligned and supportive of the process.
-Keep going — your collaborative mindset creates empowered, engaged teams over time.""",
-        "Pace-setting": """You lead by setting high standards and expecting excellence in performance.
-Your message is clear: 'Do as I do, now' — and you lead by example every step of the way.
-You demonstrate strong self-direction, initiative, and a deep drive to succeed.
-You perform at a high level and expect others to match your energy and standards.
-Your style works best with highly skilled and self-motivated team members who thrive under pressure.
-You bring conscientiousness and a laser focus to the task at hand.
-Like the Coercive leader, you’re highly results-driven — but your strength lies in modeling excellence, not control.
-While effective in fast-paced environments, this style can lead to burnout if overused.
-Keep it balanced — your power comes from your ability to inspire through your own performance.""",
-        "Commanding/Coercive": """You lead with clear authority and expect immediate action and compliance.
-Your leadership voice says: 'Do what I tell you' — direct, decisive, and firm.
-You demonstrate strong initiative, self-control, and an intense drive to succeed.
-You thrive in crisis situations where quick, commanding leadership is essential.
-You bring clarity and structure in moments of uncertainty, helping others feel grounded.
-Your style works best when time is limited, risks are high, or direction is urgently needed.
-While powerful in high-stakes moments, it can limit team creativity and ownership if used too often.
-You're aware that balance is key — and you aim to combine authority with empathy when possible.
-Well done — your ability to step up and lead under pressure is a real strength."""
-    }
+       return {
+        "Visionary/Authoritative": """Within the 6 leadership styles, you lead with a Visionary style.
 
+You lead by painting a clear and inspiring vision of the future. You naturally say, “Come with me” — inviting others to follow your lead with confidence.
+You thrive in situations where a new direction or big-picture clarity is needed. You are high in self-confidence and empathy, helping people feel connected to the bigger purpose.
+You act as a change catalyst, bringing energy and inspiration to transformation. You’re skilled at drawing others into your ideas and aligning them with shared goals.
+Your presence creates strong positivity and long-term motivation in teams. Great job,— this is one of the most powerful and uplifting leadership styles!
+
+Aspects to reflect upon is do you invest time in coaching/ guiding your team members & building deep connections. Do you listen to all the voices in the room while making decisions.
+How much of balance do you have between vision & tasks at hand. And how much of tasks are you able to complete or do you need more support here.
+
+**Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**""",
+
+        "Coaching": """Within the 6 leadership styles, you lead with a Coaching style.
+
+You focus on developing people and helping them grow over the long term. You encourage others with a mindset of “Try it” — creating a safe space to experiment and learn.
+You believe in open exploration when it comes to solving problems and reaching goals. You demonstrate strong empathy, self-awareness, and a genuine interest in others’ growth.
+You’re skilled at asking questions, offering guidance, and unlocking potential in your team. You see mistakes as learning opportunities, not failures. Your leadership is especially impactful in environments that value long-term development and individual growth. Well done, Coach — your strength lies in growing future leaders!
+
+Aspects to reflect upon is do you invest time in creating the big picture/ vision for your team. While you focus on developing people, how are you with stakeholder alignment at all levels?
+Does collaboration come easily for you. How are you with compliance related matters and those aspects that require multiple tasks and people.
+
+**Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**""",
+
+        "Affiliative": """Within the 6 leadership styles, you lead with an Affiliative Leadership style.
+
+You prioritize emotional bonds, team harmony, and well-being above all. You lead with the belief that “People come first”, and it shows in your relationships.
+You demonstrate strong empathy and communication skills, making people feel seen and heard. You excel at rebuilding trust, especially after conflicts or tough transitions.
+You create a safe, supportive environment where individuals feel valued and included. Your leadership is especially powerful when the team needs to heal, reconnect, or reignite motivation.
+While not highly goal-focused, you bring people together with emotional intelligence and care. To stay effective long-term, you ensure that team harmony supports progress, not replaces it.
+Great work — your warmth and connection-building are at the heart of strong, resilient teams.
+
+Aspects to reflect upon is do you invest time in creating the big picture/ vision for your team. While you bring so much depth in bonds and relationships at work, are you able to look at the tasks at hand and command a performance culture in the team? Are you able to have a difficult conversation with the team or does that drain you. Are you able to recognize the talent within team members easily or do you focus on how they keep the peace of the team culture.
+
+**Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**""",
+
+        "Democratic": """Within the 6 leadership styles, you lead with a Democratic Leadership style.
+
+You lead by building consensus through participation and collaboration. You often ask “What do you think?”, inviting ideas and encouraging open dialogue.
+You demonstrate strong team leadership, communication, and a spirit of inclusion. You create a culture where people feel heard, valued, and involved in decision-making.
+Your approach helps build deep ownership and commitment to shared goals. You’re especially effective in environments where trust, transparency, and team input are valued.
+While your style may slow things down early on, it pays off once team momentum builds. You ensure that key stakeholders — especially senior leaders — are aligned and supportive of the process.
+Keep going , a collaborative leader like you creates empowered, engaged teams over time!
+
+Aspects to reflect upon is whether consensus is always needed or do you want to bring your judgement when matters are high urgency/ criticality. Does big decisions which are dependent on multiple stakeholders set you off guard. What is the team vision while we arrive at consensus? In the attempt to build a democratic environment, are you losing out on any creativity within team.
+
+**Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**""",
+
+        "Pace-setting": """Within the 6 leadership styles, you lead with a Pace-Setting Leadership style.
+
+You lead by setting high standards and expecting excellence in performance. Your message is clear: “Do as I do, now” — and you lead by example every step of the way.
+You demonstrate strong self-direction, initiative, and a deep drive to succeed. You perform at a high level and expect others to match your energy and standards.
+Your style works best with highly skilled and self-motivated team members who thrive under pressure. You bring conscientiousness and a laser focus to the task at hand.
+Like the Coercive leader, you’re highly results-driven — but your strength lies in modeling excellence, not control. While effective in fast-paced environments, this style can lead to burnout if overused.
+Keep it balanced — your power comes from your ability to inspire through your own performance.
+
+Aspects to reflect upon is do you invest time in creating the big picture/ vision for your team. While you are results focused, how much do you invest time in understanding various skill levels of the team and how you can support each of them. While you want to model excellence, how empathetic are you with your team or even yourself about expectations.
+Does having to collaborate with multiple stakeholders stress you. Are your relationships with the team – surface level and not deep enough to engage and inspire them.
+
+**Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**""",
+
+        "Commanding/Coercive": """Within the 6 leadership styles, you lead with a Commanding Leadership style.
+
+You lead with clear authority and expect immediate action and compliance. Your leadership voice says: “Do what I tell you” — direct, decisive, and firm.
+You demonstrate strong initiative, self-control, and an intense drive to succeed. You thrive in crisis situations where quick, commanding leadership is essential.
+You bring clarity and structure in moments of uncertainty, helping others feel grounded. Your style works best when time is limited, risks are high, or direction is urgently needed.
+While powerful in high-stakes moments, it can limit team creativity and ownership if used too often. You're aware that balance is key — and you aim to combine authority with empathy when possible. Well done — your ability to step up and lead under pressure is a real strength.
+
+Aspects to reflect upon is how do you engage with a team and inspire them to perform in your absence. How do you delegate work in your team. Do you allow team members to lead aspects in areas of work and therefore take ownership of their own tasks. Do you tend to micro manage or give very quick feedback. How much do you focus on inspiring the team to perform beyond their capabilities.
+
+**Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**"""
+    }
 # --- TOP LEFT LOGO ---
 st.markdown("""
 <div style='position: absolute; top: 10px; left: 10px;'>
