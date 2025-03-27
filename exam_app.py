@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from fpdf import FPDF
 import os
 
+# --- APP CONFIG ---
+st.set_page_config(page_title="Leadership Inventory", layout="centered")
+
 # Apply background image
 st.markdown(
     f"""
@@ -91,8 +94,7 @@ You're aware that balance is key — and you aim to combine authority with empat
 Well done — your ability to step up and lead under pressure is a real strength.'''
     }
 
-# --- APP CONFIG ---
-st.set_page_config(page_title="Leadership Inventory", layout="centered")
+
 
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
