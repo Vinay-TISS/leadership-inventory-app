@@ -143,8 +143,7 @@ st.image("download.png", width=150)
 st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
 st.markdown("""
     Welcome! This tool helps you discover your dominant leadership style.  
-    Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile  
-    and a downloadable report with insights.
+    Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile and a downloadable report with insights.
 """)
 
 # Clear visible spacing
@@ -176,7 +175,7 @@ for index, row in questions_df.iterrows():
 styles_dict = get_leadership_styles()
 # --- ON SUBMIT ---
 if st.button("✅ Submit Exam"):
-    # Scoring and result calculation logic
+    # Scoring logic
     part_scores = {}
     for part, score in responses:
         part_scores[part] = part_scores.get(part, 0) + score
@@ -194,9 +193,9 @@ if st.button("✅ Submit Exam"):
     top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:1]
     final_style = top_styles[0][0]
 
-    styles_dict = get_leadership_styles()  # Ensure this is defined clearly here or above.
+    styles_dict = get_leadership_styles()  
 
-    # Display results clearly on the app
+    # Display results clearly
     st.markdown("---")
     st.subheader("🎯 Your Leadership Style")
 
@@ -208,7 +207,24 @@ if st.button("✅ Submit Exam"):
         </div>
         """, unsafe_allow_html=True)
 
-    # PDF Generation must clearly be inside here:
+    # 📊 Score Breakdown
+    st.markdown("### 📊 Score Breakdown")
+    score_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
+    st.table(score_df)
+
+    # 🕸️ Radar Chart clearly added back here (it wasn't deleted permanently!)
+    radar_df = score_df.copy()
+    radar_df["Style"] = radar_df["Leadership Style"]
+    fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True,
+                        title="Your Leadership Profile", markers=True)
+    fig.update_traces(fill='toself', line_color='green')
+    fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 60])), paper_bgcolor="#fff0f0")
+    st.plotly_chart(fig)
+
+    # Save Radar Chart image for PDF clearly
+    fig.write_image("radar_chart.png")
+
+    # 📝 PDF Generation clearly added here
     pdf = FPDF()
     pdf.add_page()
 
@@ -244,10 +260,14 @@ if st.button("✅ Submit Exam"):
         pdf.multi_cell(0, 8, clean_desc)
         pdf.ln(4)
 
-    # Finally, output the PDF
+    # Clearly Include Radar Chart Image if Exists
+    if os.path.exists("radar_chart.png"):
+        pdf.image("radar_chart.png", w=150)
+
+    # Generate PDF clearly
     pdf.output("leadership_report.pdf")
 
-    # Provide download button
+    # PDF Download button
     with open("leadership_report.pdf", "rb") as f:
         st.download_button(
             label="📄 Download Full PDF Report",
