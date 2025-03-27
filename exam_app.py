@@ -95,6 +95,25 @@ While powerful in high-stakes moments, it can limit team creativity and ownershi
 You're aware that balance is key — and you aim to combine authority with empathy when possible.
 Well done — your ability to step up and lead under pressure is a real strength."""
     }
+
+# --- TOP LEFT LOGO ---
+st.markdown("""
+<div style='position: absolute; top: 10px; left: 10px;'>
+    <img src='https://raw.githubusercontent.com/your-repo-path/download.png' width='60'>
+</div>
+""", unsafe_allow_html=True)
+
+# --- WELCOME MESSAGE ---
+st.markdown("""
+<div style='background-color: #ffffffdd; padding: 20px; border-radius: 12px; text-align: center;'>
+    <h2>👋 Welcome to the Dynamic Leadership Inventory</h2>
+    <p style='font-size: 16px;'>
+        This tool helps you identify your dominant leadership styles based on how you think and respond.
+        Please answer the following questions honestly. Once submitted, you'll get a personalized leadership profile
+        and a downloadable report with insights.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
 st.image("download.png", width=150)
