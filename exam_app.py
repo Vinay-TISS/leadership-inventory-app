@@ -4,7 +4,21 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 import os
+import unicodedata
 
+def clean_pdf_text(text):
+    replacements = {
+        "—": "-",    # em dash
+        "–": "-",    # en dash
+        "“": "\"",   # left double quote
+        "”": "\"",   # right double quote
+        "‘": "'",    # left single quote
+        "’": "'",    # right single quote
+        "\u00A0": " "  # non-breaking space
+    }
+    for k, v in replacements.items():
+        text = text.replace(k, v)
+    return unicodedata.normalize("NFKD", text)
 #  Page navigation state 
 if 'page' not in st.session_state:
     st.session_state.page = 'welcome'
@@ -136,7 +150,7 @@ and a downloadable report with insights.
 
     if st.button("🚀 Start the Leadership Quiz"):
         st.session_state.page = 'quiz'
-
+  st.experimental_rerun()  # 🔁 This forces an immediate rerun to load the quiz
     st.stop()
     
 # --- LOGO + TITLE ---
@@ -234,10 +248,10 @@ if st.button("✅ Submit Exam"):
     pdf.set_font("Arial", size=12)
     for style, score in top_styles:
         pdf.set_text_color(0, 51, 102)
-        pdf.multi_cell(0, 8, f"{style} ({score})")
+       pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
         pdf.set_text_color(0, 0, 0)
-        clean_desc = styles[style].encode('latin-1', 'replace').decode('latin-1')
-        pdf.multi_cell(0, 8, clean_desc)
+        clean_desc = clean_pdf_text(styles[style])
+     pdf.multi_cell(0, 8, clean_desc)
         pdf.ln(4)
 
     pdf.set_font("Arial", 'B', 12)
