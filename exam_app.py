@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from fpdf import FPDF
 import os
 
+#  Page navigation state 
+if 'page' not in st.session_state:
+    st.session_state.page = 'welcome'
 # --- APP CONFIG ---
 st.set_page_config(page_title="Leadership Inventory", layout="centered")
 
@@ -104,16 +107,19 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- WELCOME MESSAGE ---
-st.markdown("""
-<div style='background-color: #ffffffdd; padding: 20px; border-radius: 12px; text-align: center;'>
-    <h2>👋 Welcome to the Dynamic Leadership Inventory</h2>
-    <p style='font-size: 16px;'>
-        This tool helps you identify your dominant leadership styles based on how you think and respond.
-        Please answer the following questions honestly. Once submitted, you'll get a personalized leadership profile
-        and a downloadable report with insights.
-    </p>
-</div>
-""", unsafe_allow_html=True)
+if st.session_state.page == 'welcome':
+    st.image("download.png", width=150)
+    st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
+    st.markdown("Welcome! This tool helps you discover your dominant leadership style based on your inputs.
+     Please answer the following questions honestly. Once submitted, you'll get a personalized leadership profile
+        and a downloadable report with insights.")
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    if st.button("🚀 Start the Leadership Quiz"):
+        st.session_state.page = 'quiz'
+
+    st.stop()
+    
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
 st.image("download.png", width=150)
@@ -161,11 +167,11 @@ if st.button("✅ Submit Exam"):
         style = style_map[part]
         style_totals[style] = style_totals.get(style, 0) + total
 
-    top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:2]
+    top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:1]
     final_style = top_styles[0][0]
 
     st.markdown("---")
-    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Top 2 Leadership Styles</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Leadership Styles</h2>", unsafe_allow_html=True)
 
     for style, score in top_styles:
         st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
