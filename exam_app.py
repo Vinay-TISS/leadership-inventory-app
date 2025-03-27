@@ -228,6 +228,7 @@ if st.button("✅ Submit Exam"):
     pdf.image("download.png", x=10, y=8, w=40)
     pdf.ln(25)
     pdf.set_font("Arial", 'B', 16)
+    pdf.set_text_color(135, 206, 235)
     pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
     pdf.ln(10)
 
