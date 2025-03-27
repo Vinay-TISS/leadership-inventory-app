@@ -2,6 +2,20 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# Apply background image
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url("background.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Load Excel from the same directory
 @st.cache_data
 def load_questions():
