@@ -19,24 +19,25 @@ def load_questions():
 
 def get_leadership_styles():
     return {
-        "Visionary/Authoritative": "You lead by painting a clear and inspiring vision of the future.
+       "Visionary/Authoritative": '''You lead by painting a clear and inspiring vision of the future.
 You naturally say, “Come with me” — inviting others to follow your lead with confidence.
 You thrive in situations where a new direction or big-picture clarity is needed.
 You are high in self-confidence and empathy, helping people feel connected to the bigger purpose.
 You act as a change catalyst, bringing energy and inspiration to transformation.
 You’re skilled at drawing others into your ideas and aligning them with shared goals.
 Your presence creates strong positivity and long-term motivation in teams.
-Great job, leader — this is one of the most powerful and uplifting leadership styles! ",
-        "Coaching": "You focus on developing people and helping them grow over the long term.
+Great job, leader — this is one of the most powerful and uplifting leadership styles!''',
+
+        "Coaching": '''You focus on developing people and helping them grow over the long term.
 You encourage others with a mindset of “Try it” — creating a safe space to experiment and learn.
 You believe in open exploration when it comes to solving problems and reaching goals.
 You demonstrate strong empathy, self-awareness, and a genuine interest in others’ growth.
 You’re skilled at asking questions, offering guidance, and unlocking potential in your team.
 You see mistakes as learning opportunities, not failures.
 Your leadership is especially impactful in environments that value long-term development and individual growth.
-Well done, coach — your strength lies in growing future leaders!
-",
-        "Affiliative": "You prioritize emotional bonds, team harmony, and well-being above all.
+Well done, coach — your strength lies in growing future leaders!''',
+
+        "Affiliative": '''You prioritize emotional bonds, team harmony, and well-being above all.
 You lead with the belief that “People come first”, and it shows in your relationships.
 You demonstrate strong empathy and communication skills, making people feel seen and heard.
 You excel at rebuilding trust, especially after conflicts or tough transitions.
@@ -44,9 +45,9 @@ You create a safe, supportive environment where individuals feel valued and incl
 Your leadership is especially powerful when the team needs to heal, reconnect, or reignite motivation.
 While not highly goal-focused, you bring people together with emotional intelligence and care.
 To stay effective long-term, you ensure that team harmony supports progress, not replaces it.
-Great work — your warmth and connection-building are at the heart of strong, resilient teams.
-",
-        "Democratic": "You lead by building consensus through participation and collaboration.
+Great work — your warmth and connection-building are at the heart of strong, resilient teams.''',
+
+        "Democratic": '''You lead by building consensus through participation and collaboration.
 You often ask “What do you think?”, inviting ideas and encouraging open dialogue.
 You demonstrate strong team leadership, communication, and a spirit of inclusion.
 You create a culture where people feel heard, valued, and involved in decision-making.
@@ -54,9 +55,9 @@ Your approach helps build deep ownership and commitment to shared goals.
 You’re especially effective in environments where trust, transparency, and team input are valued.
 While your style may slow things down early on, it pays off once team momentum builds.
 You ensure that key stakeholders — especially senior leaders — are aligned and supportive of the process.
-Keep going — your collaborative mindset creates empowered, engaged teams over time.
-",
-        "Pace-setting": "You lead by setting high standards and expecting excellence in performance.
+Keep going — your collaborative mindset creates empowered, engaged teams over time.''',
+
+        "Pace-setting": '''You lead by setting high standards and expecting excellence in performance.
 Your message is clear: “Do as I do, now” — and you lead by example every step of the way.
 You demonstrate strong self-direction, initiative, and a deep drive to succeed.
 You perform at a high level and expect others to match your energy and standards.
@@ -64,8 +65,9 @@ Your style works best with highly skilled and self-motivated team members who th
 You bring conscientiousness and a laser focus to the task at hand.
 Like the Coercive leader, you’re highly results-driven — but your strength lies in modeling excellence, not control.
 While effective in fast-paced environments, this style can lead to burnout if overused.
-Keep it balanced — your power comes from your ability to inspire through your own performance.",
-        "Commanding/Coercive": "You lead with clear authority and expect immediate action and compliance.
+Keep it balanced — your power comes from your ability to inspire through your own performance.''',
+
+        "Commanding/Coercive": '''You lead with clear authority and expect immediate action and compliance.
 Your leadership voice says: “Do what I tell you” — direct, decisive, and firm.
 You demonstrate strong initiative, self-control, and an intense drive to succeed.
 You thrive in crisis situations where quick, commanding leadership is essential.
@@ -73,9 +75,9 @@ You bring clarity and structure in moments of uncertainty, helping others feel g
 Your style works best when time is limited, risks are high, or direction is urgently needed.
 While powerful in high-stakes moments, it can limit team creativity and ownership if used too often.
 You're aware that balance is key — and you aim to combine authority with empathy when possible.
-Well done — your ability to step up and lead under pressure is a real strength.
-"
+Well done — your ability to step up and lead under pressure is a real strength.'''
     }
+
 
 # --- APP CONFIG ---
 st.set_page_config(page_title="Leadership Inventory", layout="centered")
