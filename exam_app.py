@@ -151,7 +151,7 @@ if st.button("✅ Submit Exam"):
 
     for style, score in top_styles:
         st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
-       st.markdown(f"""
+      st.markdown(f"""
 <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
 {styles[style]}
 </div>
