@@ -130,6 +130,7 @@ Aspects to reflect upon is how do you engage with a team and inspire them to per
 
 **Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**"""
     }
+    
 # --- TOP LEFT LOGO ---
 st.markdown("""
 <div style='position: absolute; top: 10px; left: 10px;'>
@@ -181,7 +182,8 @@ responses = []
 for index, row in questions_df.iterrows():
     score = st.slider(f"{int(row['Q_No'])}. {row['Question']}", 1, 5, 3)
     responses.append((row['Part'], score))
-
+    
+styles_dict = get_leadership_styles()
 # --- ON SUBMIT ---
 if st.button("✅ Submit Exam"):
     part_scores = {}
