@@ -225,53 +225,58 @@ if st.button("✅ Submit Exam"):
     fig.write_image("radar_chart.png")
 
     # 📝 PDF Generation clearly added here
+    # 📝 PDF Generation clearly structured
     pdf = FPDF()
     pdf.add_page()
 
-    # Title (Bold Sky Blue)
+# Logo clearly placed at the top left
+    pdf.image("download.png", x=10, y=8, w=40)
+    pdf.ln(25)
+
+# Title: Leadership Inventory (Bold Sky Blue)
     pdf.set_font("Arial", 'B', 16)
-    pdf.set_text_color(135, 206, 235)
+    pdf.set_text_color(135, 206, 235)  # Sky Blue clearly
     pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
     pdf.ln(10)
 
-    # Name and Email (Regular Black)
+# Participant Info (Regular Black clearly)
     pdf.set_font("Arial", size=12)
-    pdf.set_text_color(0, 0, 0)
+    pdf.set_text_color(0, 0, 0)  # Black
     pdf.cell(0, 10, f"Name: {name}", ln=True)
     pdf.cell(0, 10, f"Email: {email}", ln=True)
     pdf.ln(10)
 
-    # Top Leadership Style Heading (Bold Black)
+# Top Leadership Style Heading (Bold Black)
     pdf.set_font("Arial", 'B', 14)
-    pdf.set_text_color(0, 0, 0)
+    pdf.set_text_color(0, 0, 0)  # Black
     pdf.cell(0, 10, "Top Leadership Style:", ln=True)
     pdf.ln(6)
 
-    # Actual Leadership Style (Bold Sky Blue) and description (Regular Black)
-    for style, score in top_styles:
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_text_color(135, 206, 235)
-        pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
-        pdf.ln(2)
+# Actual Leadership Style Name clearly (Bold Dark Blue) and description (Regular Black)
+for style, score in top_styles:
+    pdf.set_font("Arial", 'B', 12)
+    pdf.set_text_color(0, 51, 102)  # Dark Blue clearly
+    pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
+    pdf.ln(2)
 
-        pdf.set_font("Arial", size=12)
-        pdf.set_text_color(0, 0, 0)
-        clean_desc = clean_pdf_text(styles_dict[style])
-        pdf.multi_cell(0, 8, clean_desc)
-        pdf.ln(4)
+    pdf.set_font("Arial", size=12)
+    pdf.set_text_color(0, 0, 0)  # Black
+    clean_desc = clean_pdf_text(styles_dict[style])
+    pdf.multi_cell(0, 8, clean_desc)
+    pdf.ln(4)
 
-    # Clearly Include Radar Chart Image if Exists
-    if os.path.exists("radar_chart.png"):
-        pdf.image("radar_chart.png", w=150)
+# Clearly Include Radar Chart Image (if exists)
+if os.path.exists("radar_chart.png"):
+    pdf.image("radar_chart.png", w=150)
 
-    # Generate PDF clearly
-    pdf.output("leadership_report.pdf")
+# Generate PDF clearly
+pdf.output("leadership_report.pdf")
 
-    # PDF Download button
-    with open("leadership_report.pdf", "rb") as f:
-        st.download_button(
-            label="📄 Download Full PDF Report",
-            data=f,
-            file_name="leadership_report.pdf",
-            mime="application/pdf"
-        )
+# PDF Download button clearly structured
+with open("leadership_report.pdf", "rb") as f:
+    st.download_button(
+        label="📄 Download Full PDF Report",
+        data=f,
+        file_name="leadership_report.pdf",
+        mime="application/pdf"
+    )
