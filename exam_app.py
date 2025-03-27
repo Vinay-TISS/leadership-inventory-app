@@ -168,13 +168,62 @@ if st.button("✅ Submit Exam"):
     radar_df["Style"] = radar_df["Leadership Style"]
     fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True, 
                         title="Your Leadership Profile", markers=True)
+
     fig.update_traces(fill='toself', line_color='green')
     fig.update_layout(
         polar=dict(radialaxis=dict(visible=True, range=[0, 60])),
         paper_bgcolor="#fff0f0"
     )
     st.plotly_chart(fig)
+# Save radar chart
+fig.write_image("radar_chart.png")
 
-    # --- DOWNLOAD RESULT ---
-    result_text = f"Leadership Inventory Result\nName: {name}\nEmail: {email}\n\nYour Leadership Style: {final_style}\n\n{description}"
-    st.download_button("📥 Download Your Result", result_text, file_name="leadership_result.txt")
+# Generate PDF
+pdf = PDF()
+pdf.add_page()
+
+# Participant info
+pdf.set_font("Arial", size=12)
+pdf.set_text_color(0, 0, 0)
+pdf.cell(0, 10, f"Name: {name}", ln=True)
+pdf.cell(0, 10, f"Email: {email}", ln=True)
+pdf.ln(10)
+
+# Top 2 styles and descriptions
+top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:2]
+for style, score in top_styles:
+    pdf.set_font("Arial", "B", 12)
+    pdf.set_text_color(0, 51, 102)
+    pdf.multi_cell(0, 10, f"{style} ({score})")
+    pdf.set_font("Arial", "", 11)
+    pdf.set_text_color(0, 0, 0)
+    pdf.multi_cell(0, 8, styles[style])
+    pdf.ln(5)
+
+# Score breakdown
+pdf.set_font("Arial", "B", 12)
+pdf.cell(0, 10, "Score Breakdown", ln=True)
+pdf.set_font("Arial", "", 11)
+for style, score in style_totals.items():
+    pdf.cell(0, 8, f"{style}: {score}", ln=True)
+
+# Radar chart
+pdf.ln(5)
+if os.path.exists("radar_chart.png"):
+    pdf.image("radar_chart.png", w=150)
+
+# Save PDF
+pdf_path = "leadership_report.pdf"
+pdf.output(pdf_path)
+
+# Download button
+with open(pdf_path, "rb") as f:
+    st.download_button(
+        label="📄 Download Full PDF Report",
+        data=f,
+        file_name="leadership_report.pdf",
+        mime="application/pdf"
+    )
+
+
+   
