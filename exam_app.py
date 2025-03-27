@@ -228,7 +228,7 @@ if st.button("✅ Submit Exam"):
 
     fig.write_image("radar_chart.png")
 
-    pdf = FPDF()
+   pdf = FPDF()
 pdf.add_page()
 
 # Logo
@@ -253,4 +253,26 @@ pdf.set_font("Arial", 'B', 14)
 pdf.cell(0, 10, "Top Leadership Style:", ln=True)
 pdf.set_font("Arial", size=12)
 
-for style, score in top
+for style, score in top_styles:  # top_styles should be [:1]
+    pdf.set_text_color(0, 51, 102)
+    pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
+    
+    pdf.set_text_color(0, 0, 0)
+    clean_desc = clean_pdf_text(styles[style])
+    pdf.multi_cell(0, 8, clean_desc)
+    pdf.ln(4)
+
+# Radar Chart (if available)
+if os.path.exists("radar_chart.png"):
+    pdf.image("radar_chart.png", w=150)
+
+# Save and Download
+pdf.output("leadership_report.pdf")
+
+with open("leadership_report.pdf", "rb") as f:
+    st.download_button(
+        label="📄 Download Full PDF Report",
+        data=f,
+        file_name="leadership_report.pdf",
+        mime="application/pdf"
+    )
