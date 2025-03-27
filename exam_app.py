@@ -82,7 +82,7 @@ st.set_page_config(page_title="Leadership Inventory", layout="centered")
 
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-st.image("logo.png", width=150)
+st.image("download.png", width=150)
 st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
