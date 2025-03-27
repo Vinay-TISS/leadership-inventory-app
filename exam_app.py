@@ -176,6 +176,7 @@ for index, row in questions_df.iterrows():
 styles_dict = get_leadership_styles()
 # --- ON SUBMIT ---
 if st.button("✅ Submit Exam"):
+    # Scoring and result calculation logic
     part_scores = {}
     for part, score in responses:
         part_scores[part] = part_scores.get(part, 0) + score
@@ -193,77 +194,60 @@ if st.button("✅ Submit Exam"):
     top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:1]
     final_style = top_styles[0][0]
 
+    styles_dict = get_leadership_styles()  # Ensure this is defined clearly here or above.
+
+    # Display results clearly on the app
     st.markdown("---")
-    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Leadership Style</h2>", unsafe_allow_html=True)
+    st.subheader("🎯 Your Leadership Style")
 
     for style, score in top_styles:
         st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
         st.markdown(f"""
-    <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
-    {styles_dict[style]}
-    </div>
-    """, unsafe_allow_html=True)
+        <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
+        {styles_dict[style]}
+        </div>
+        """, unsafe_allow_html=True)
 
-    # 📊 Score Breakdown
-    st.markdown("### 📊 Score Breakdown")
-    score_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
-    st.table(score_df)
-
-    # 🕸️ Radar Chart
-    radar_df = score_df.copy()
-    radar_df["Style"] = radar_df["Leadership Style"]
-    fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True,
-                        title="Your Leadership Profile", markers=True)
-    fig.update_traces(fill='toself', line_color='green')
-    fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 60])), paper_bgcolor="#fff0f0")
-    st.plotly_chart(fig)
-
-    # Save Radar Chart image for PDF
-    fig.write_image("radar_chart.png")
-
-    # 📝 PDF Report Generation
+    # PDF Generation must clearly be inside here:
     pdf = FPDF()
     pdf.add_page()
 
-    pdf.image("download.png", x=10, y=8, w=40)
-    pdf.ln(25)
+    # Title (Bold Sky Blue)
     pdf.set_font("Arial", 'B', 16)
-    pdf.set_text_color(135, 206, 235)  # Sky Blue color
+    pdf.set_text_color(135, 206, 235)
     pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
     pdf.ln(10)
 
-# Name and Email (Regular Black)
+    # Name and Email (Regular Black)
     pdf.set_font("Arial", size=12)
-    pdf.set_text_color(0, 0, 0)  # Black
+    pdf.set_text_color(0, 0, 0)
     pdf.cell(0, 10, f"Name: {name}", ln=True)
     pdf.cell(0, 10, f"Email: {email}", ln=True)
     pdf.ln(10)
 
-# "Top Leadership Style:" heading (Bold Black)
+    # Top Leadership Style Heading (Bold Black)
     pdf.set_font("Arial", 'B', 14)
-    pdf.set_text_color(0, 0, 0)  # Black
+    pdf.set_text_color(0, 0, 0)
     pdf.cell(0, 10, "Top Leadership Style:", ln=True)
     pdf.ln(6)
 
-# Actual leadership style and score (Bold Sky Blue)
-for style, score in top_styles:
-    pdf.set_font("Arial", 'B', 12)
-    pdf.set_text_color(135, 206, 235)  # Sky Blue for the style name
-    pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
-    pdf.ln(2)
+    # Actual Leadership Style (Bold Sky Blue) and description (Regular Black)
+    for style, score in top_styles:
+        pdf.set_font("Arial", 'B', 12)
+        pdf.set_text_color(135, 206, 235)
+        pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
+        pdf.ln(2)
 
-    # Description (Regular Black)
-    pdf.set_font("Arial", size=12)
-    pdf.set_text_color(0, 0, 0)  # Black for description
-    clean_desc = clean_pdf_text(styles_dict[style])
-    pdf.multi_cell(0, 8, clean_desc)
-    pdf.ln(4)
+        pdf.set_font("Arial", size=12)
+        pdf.set_text_color(0, 0, 0)
+        clean_desc = clean_pdf_text(styles_dict[style])
+        pdf.multi_cell(0, 8, clean_desc)
+        pdf.ln(4)
 
-    if os.path.exists("radar_chart.png"):
-        pdf.image("radar_chart.png", w=150)
-
+    # Finally, output the PDF
     pdf.output("leadership_report.pdf")
 
+    # Provide download button
     with open("leadership_report.pdf", "rb") as f:
         st.download_button(
             label="📄 Download Full PDF Report",
