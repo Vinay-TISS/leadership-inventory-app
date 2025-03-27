@@ -193,7 +193,7 @@ if st.button("✅ Submit Exam"):
     top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:1]
     final_style = top_styles[0][0]
 
-    styles_dict = get_leadership_styles()  
+    styles_dict = get_leadership_styles()
 
     # Display results clearly
     st.markdown("---")
@@ -203,7 +203,7 @@ if st.button("✅ Submit Exam"):
         st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
         st.markdown(f"""
         <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
-        {styles_dict[style]}
+            {styles_dict[style]}
         </div>
         """, unsafe_allow_html=True)
 
@@ -212,7 +212,7 @@ if st.button("✅ Submit Exam"):
     score_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
     st.table(score_df)
 
-    # 🕸️ Radar Chart clearly added back here (it wasn't deleted permanently!)
+    # 🕸️ Radar Chart
     radar_df = score_df.copy()
     radar_df["Style"] = radar_df["Leadership Style"]
     fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True,
@@ -221,62 +221,61 @@ if st.button("✅ Submit Exam"):
     fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 60])), paper_bgcolor="#fff0f0")
     st.plotly_chart(fig)
 
-    # Save Radar Chart image for PDF clearly
+    # Save Radar Chart image for PDF
     fig.write_image("radar_chart.png")
 
-    # 📝 PDF Generation clearly added here
-    # 📝 PDF Generation clearly structured
+    # 📝 PDF Generation
     pdf = FPDF()
     pdf.add_page()
 
-# Logo clearly placed at the top left
+    # Logo placed at the top-left clearly
     pdf.image("download.png", x=10, y=8, w=40)
     pdf.ln(25)
 
-# Title: Leadership Inventory (Bold Sky Blue)
+    # Title (Bold Sky Blue)
     pdf.set_font("Arial", 'B', 16)
-    pdf.set_text_color(135, 206, 235)  # Sky Blue clearly
+    pdf.set_text_color(135, 206, 235)  # Sky Blue
     pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
     pdf.ln(10)
 
-# Participant Info (Regular Black clearly)
+    # Participant Information (Black, Regular clearly)
     pdf.set_font("Arial", size=12)
     pdf.set_text_color(0, 0, 0)  # Black
     pdf.cell(0, 10, f"Name: {name}", ln=True)
     pdf.cell(0, 10, f"Email: {email}", ln=True)
     pdf.ln(10)
 
-# Top Leadership Style Heading (Bold Black)
+    # "Top Leadership Style" heading (Bold Black)
     pdf.set_font("Arial", 'B', 14)
     pdf.set_text_color(0, 0, 0)  # Black
     pdf.cell(0, 10, "Top Leadership Style:", ln=True)
     pdf.ln(6)
 
-# Actual Leadership Style Name clearly (Bold Dark Blue) and description (Regular Black)
-for style, score in top_styles:
-    pdf.set_font("Arial", 'B', 12)
-    pdf.set_text_color(0, 51, 102)  # Dark Blue clearly
-    pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
-    pdf.ln(2)
+    # Actual Leadership Style (Bold Dark Blue) and Description (Regular Black)
+    for style, score in top_styles:
+        pdf.set_font("Arial", 'B', 12)
+        pdf.set_text_color(0, 51, 102)  # Dark Blue
+        pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
+        pdf.ln(2)
 
-    pdf.set_font("Arial", size=12)
-    pdf.set_text_color(0, 0, 0)  # Black
-    clean_desc = clean_pdf_text(styles_dict[style])
-    pdf.multi_cell(0, 8, clean_desc)
-    pdf.ln(4)
+        pdf.set_font("Arial", size=12)
+        pdf.set_text_color(0, 0, 0)  # Black
+        clean_desc = clean_pdf_text(styles_dict[style])
+        pdf.multi_cell(0, 8, clean_desc)
+        pdf.ln(4)
 
-# Clearly Include Radar Chart Image (if exists)
-if os.path.exists("radar_chart.png"):
-    pdf.image("radar_chart.png", w=150)
+    # Include Radar Chart Image (clearly if exists)
+    if os.path.exists("radar_chart.png"):
+        pdf.image("radar_chart.png", w=150)
 
-# Generate PDF clearly
-pdf.output("leadership_report.pdf")
+    # Generate PDF file clearly
+    pdf.output("leadership_report.pdf")
 
-# PDF Download button clearly structured
-with open("leadership_report.pdf", "rb") as f:
-    st.download_button(
-        label="📄 Download Full PDF Report",
-        data=f,
-        file_name="leadership_report.pdf",
-        mime="application/pdf"
-    )
+    # Provide PDF Download Button clearly
+    with open("leadership_report.pdf", "rb") as f:
+        st.download_button(
+            label="📄 Download Full PDF Report",
+            data=f,
+            file_name="leadership_report.pdf",
+            mime="application/pdf"
+        )
