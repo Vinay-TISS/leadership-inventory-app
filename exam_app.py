@@ -197,11 +197,7 @@ if st.button("✅ Submit Exam"):
         "PART 6": "Commanding/Coercive"
     }
 
-    style_totals = {}
-    for part, total in part_scores.items():
-        style = style_map[part]
-        style_totals[style] = style_totals.get(style, 0) + total
-
+    style_totals = {style_map[k]: v for k, v in part_scores.items()}
     top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:1]
     final_style = top_styles[0][0]
 
@@ -211,16 +207,17 @@ if st.button("✅ Submit Exam"):
     for style, score in top_styles:
         st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
         st.markdown(f"""
-<div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
-{styles_dict[style]}
-</div>
-""", unsafe_allow_html=True)
+    <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
+    {styles_dict[style]}
+    </div>
+    """, unsafe_allow_html=True)
 
+    # 📊 Score Breakdown
     st.markdown("### 📊 Score Breakdown")
     score_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
     st.table(score_df)
 
-    st.markdown("### 🕸️ Leadership Profile Chart")
+    # 🕸️ Radar Chart
     radar_df = score_df.copy()
     radar_df["Style"] = radar_df["Leadership Style"]
     fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True,
@@ -229,53 +226,46 @@ if st.button("✅ Submit Exam"):
     fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 60])), paper_bgcolor="#fff0f0")
     st.plotly_chart(fig)
 
+    # Save Radar Chart image for PDF
     fig.write_image("radar_chart.png")
 
-pdf = FPDF()
-pdf.add_page()
+    # 📝 PDF Report Generation
+    pdf = FPDF()
+    pdf.add_page()
 
-# Logo
-pdf.image("download.png", x=10, y=8, w=40)  # Castrol logo at top-left
-pdf.ln(25)
+    pdf.image("download.png", x=10, y=8, w=40)
+    pdf.ln(25)
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
+    pdf.ln(10)
 
-# Title
-pdf.set_font("Arial", 'B', 16)
-pdf.set_text_color(0, 102, 204)
-pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
-pdf.ln(10)
+    pdf.set_font("Arial", size=12)
+    pdf.cell(0, 10, f"Name: {name}", ln=True)
+    pdf.cell(0, 10, f"Email: {email}", ln=True)
+    pdf.ln(10)
 
-# Participant Info
-pdf.set_text_color(0, 0, 0)
-pdf.set_font("Arial", size=12)
-pdf.cell(0, 10, f"Name: {name}", ln=True)
-pdf.cell(0, 10, f"Email: {email}", ln=True)
-pdf.ln(10)
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(0, 10, "Top Leadership Style:", ln=True)
+    pdf.set_font("Arial", size=12)
 
-# Top Leadership Style
-pdf.set_font("Arial", 'B', 14)
-pdf.cell(0, 10, "Top Leadership Style:", ln=True)
-pdf.set_font("Arial", size=12)
+    for style, score in top_styles:
+        pdf.set_text_color(0, 51, 102)
+        pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
 
-for style, score in top_styles:  # top_styles should be [:1]
-    pdf.set_text_color(0, 51, 102)
-    pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
-    
-    pdf.set_text_color(0, 0, 0)
-    clean_desc = clean_pdf_text(styles[style])
-    pdf.multi_cell(0, 8, clean_desc)
-    pdf.ln(4)
+        pdf.set_text_color(0, 0, 0)
+        clean_desc = clean_pdf_text(styles_dict[style])
+        pdf.multi_cell(0, 8, clean_desc)
+        pdf.ln(4)
 
-# Radar Chart (if available)
-if os.path.exists("radar_chart.png"):
-    pdf.image("radar_chart.png", w=150)
+    if os.path.exists("radar_chart.png"):
+        pdf.image("radar_chart.png", w=150)
 
-# Save and Download
-pdf.output("leadership_report.pdf")
+    pdf.output("leadership_report.pdf")
 
-with open("leadership_report.pdf", "rb") as f:
-    st.download_button(
-        label="📄 Download Full PDF Report",
-        data=f,
-        file_name="leadership_report.pdf",
-        mime="application/pdf"
-    )
+    with open("leadership_report.pdf", "rb") as f:
+        st.download_button(
+            label="📄 Download Full PDF Report",
+            data=f,
+            file_name="leadership_report.pdf",
+            mime="application/pdf"
+        )
