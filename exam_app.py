@@ -147,10 +147,11 @@ if st.session_state.page == 'welcome':
         and a downloadable report with insights.
     """)
 
-   if st.button("🚀 Start the Leadership Quiz"):
-    st.session_state.page = 'quiz'
-    st.success("Loading quiz... Please wait.")
-    st.stop()  # prevents rest of the app from executing until rerun happens
+    if st.button("🚀 Start the Leadership Quiz"):
+        st.session_state.page = 'quiz'
+        st.markdown('<meta http-equiv="refresh" content="0">', unsafe_allow_html=True)
+
+    st.stop()
     
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
