@@ -110,9 +110,11 @@ st.markdown("""
 if st.session_state.page == 'welcome':
     st.image("download.png", width=150)
     st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
-    st.markdown("Welcome! This tool helps you discover your dominant leadership style based on your inputs.
-     Please answer the following questions honestly. Once submitted, you'll get a personalized leadership profile
-        and a downloadable report with insights.")
+    st.markdown("""
+Welcome! This tool helps you discover your dominant leadership style based on your inputs.  
+Please answer the following questions honestly. Once submitted, you'll get a personalized leadership profile  
+and a downloadable report with insights.
+""")
     st.markdown("<br>", unsafe_allow_html=True)
 
     if st.button("🚀 Start the Leadership Quiz"):
