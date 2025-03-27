@@ -206,13 +206,13 @@ if st.button("✅ Submit Exam"):
     final_style = top_styles[0][0]
 
     st.markdown("---")
-    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Leadership Styles</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Leadership Style</h2>", unsafe_allow_html=True)
 
     for style, score in top_styles:
         st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
         st.markdown(f"""
 <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
-{styles[style]}
+{styles_dict[style]}
 </div>
 """, unsafe_allow_html=True)
 
