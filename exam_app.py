@@ -229,46 +229,28 @@ if st.button("✅ Submit Exam"):
     fig.write_image("radar_chart.png")
 
     pdf = FPDF()
-    pdf.add_page()
-    pdf.image("download.png", x=10, y=8, w=40)  # Add Castrol logo at top-left
-    pdf.ln(25)  # Adds space below the logo
-    pdf.set_font("Arial", 'B', 16)
-    pdf.set_text_color(0, 102, 204)
-    pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
-    pdf.ln(10)
-    pdf.set_text_color(0, 0, 0)
-    pdf.set_font("Arial", size=12)
-    pdf.cell(0, 10, f"Name: {name}", ln=True)
-    pdf.cell(0, 10, f"Email: {email}", ln=True)
-    pdf.ln(10)
+pdf.add_page()
 
-    pdf.set_font("Arial", 'B', 14)
-    pdf.cell(0, 10, "Top Leadership Styles:", ln=True)
-    pdf.set_font("Arial", size=12)
-    for style, score in top_styles:
-        pdf.set_text_color(0, 51, 102)
-       pdf.multi_cell(0, 8, clean_pdf_text(f"{style} ({score})"))
-        pdf.set_text_color(0, 0, 0)
-        clean_desc = clean_pdf_text(styles[style])
-     pdf.multi_cell(0, 8, clean_desc)
-        pdf.ln(4)
+# Logo
+pdf.image("download.png", x=10, y=8, w=40)  # Castrol logo at top-left
+pdf.ln(25)
 
-    pdf.set_font("Arial", 'B', 12)
-    pdf.cell(0, 10, "Score Breakdown:", ln=True)
-    pdf.set_font("Arial", size=11)
-    for style, score in style_totals.items():
-        pdf.cell(0, 8, f"{style}: {score}", ln=True)
-    pdf.ln(5)
+# Title
+pdf.set_font("Arial", 'B', 16)
+pdf.set_text_color(0, 102, 204)
+pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
+pdf.ln(10)
 
-    if os.path.exists("radar_chart.png"):
-        pdf.image("radar_chart.png", w=150)
+# Participant Info
+pdf.set_text_color(0, 0, 0)
+pdf.set_font("Arial", size=12)
+pdf.cell(0, 10, f"Name: {name}", ln=True)
+pdf.cell(0, 10, f"Email: {email}", ln=True)
+pdf.ln(10)
 
-    pdf.output("leadership_report.pdf")
+# Top Leadership Style
+pdf.set_font("Arial", 'B', 14)
+pdf.cell(0, 10, "Top Leadership Style:", ln=True)
+pdf.set_font("Arial", size=12)
 
-    with open("leadership_report.pdf", "rb") as f:
-        st.download_button(
-            label="📄 Download Full PDF Report",
-            data=f,
-            file_name="leadership_report.pdf",
-            mime="application/pdf"
-        )
+for style, score in top
