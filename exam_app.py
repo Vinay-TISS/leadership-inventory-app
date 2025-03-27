@@ -138,6 +138,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- WELCOME MESSAGE ---
+if 'page' not in st.session_state:
+    st.session_state.page = 'welcome'
+
 if st.session_state.page == 'welcome':
     st.image("download.png", width=150)
     st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
@@ -149,7 +152,6 @@ if st.session_state.page == 'welcome':
 
     if st.button("🚀 Start the Leadership Quiz"):
         st.session_state.page = 'quiz'
-        st.markdown('<meta http-equiv="refresh" content="0">', unsafe_allow_html=True)
 
     st.stop()
     
