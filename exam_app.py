@@ -131,8 +131,8 @@ if st.button("✅ Submit Exam"):
         style_totals[style] = style_totals.get(style, 0) + total
 
     # Highest scoring style
-    final_style = max(style_totals, key=style_totals.get)
-    description = styles[final_style]
+   top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:2]
+    description = styles[top_styles]
 
     # --- RESULT CARD (GREEN/RED THEME) ---
     st.markdown("---")
