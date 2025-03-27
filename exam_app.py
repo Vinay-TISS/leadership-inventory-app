@@ -143,14 +143,15 @@ if st.session_state.page == 'welcome':
     st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
     st.markdown("""
         Welcome! This tool helps you discover your dominant leadership style.  
-        Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile  and a downloadable report with insights.
+        Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile  
+        and a downloadable report with insights.
     """)
 
     if st.button("🚀 Start the Leadership Quiz"):
         st.session_state.page = 'quiz'
-        st.experimental_rerun()  # ✅ This line must be indented exactly under the 'if st.button'
+        st.experimental_rerun()  # 🔁 Rerun immediately after changing state
 
-    st.stop()
+    st.stop()  # ⛔ Stop here so nothing below runs on this page
     
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
