@@ -228,7 +228,7 @@ if st.button("✅ Submit Exam"):
 
     fig.write_image("radar_chart.png")
 
-   pdf = FPDF()
+pdf = FPDF()
 pdf.add_page()
 
 # Logo
