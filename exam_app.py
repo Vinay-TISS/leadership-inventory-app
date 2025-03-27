@@ -13,7 +13,7 @@ st.markdown(
     f"""
     <style>
     .stApp {{
-        background-image: url("background.jpg");
+        background-image: url("Leadership.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -38,6 +38,8 @@ def load_questions():
     questions_df = pd.concat(all_parts, ignore_index=True)
     return questions_df
 
+# Full leadership styles dictionary preserved
+" + """
 def get_leadership_styles():
     return {
         "Visionary/Authoritative": '''You lead by painting a clear and inspiring vision of the future.
@@ -93,9 +95,7 @@ While powerful in high-stakes moments, it can limit team creativity and ownershi
 You're aware that balance is key — and you aim to combine authority with empathy when possible.
 Well done — your ability to step up and lead under pressure is a real strength.'''
     }
-
-
-
+""" + "
 # --- LOGO + TITLE ---
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
 st.image("download.png", width=150)
@@ -145,15 +145,17 @@ if st.button("✅ Submit Exam"):
 
     top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:2]
     final_style = top_styles[0][0]
-    description = styles[final_style]
 
     st.markdown("---")
-    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Leadership Style: {final_style}</h2>", unsafe_allow_html=True)
-    st.markdown(f"""
-        <div style='background-color:#e6ffe6; padding:20px; border-radius:12px; border-left: 6px solid green;'>
-        <b style='color:#003300;'>{description}</b>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<h2 style='text-align:center; color:green;'>🎯 Your Top 2 Leadership Styles</h2>", unsafe_allow_html=True)
+
+    for style, score in top_styles:
+        st.markdown(f"<h4 style='color:#2e7d32;'>{style} ({score})</h4>", unsafe_allow_html=True)
+        st.markdown(f"""
+            <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
+            {styles[style]}
+            </div>
+        """, unsafe_allow_html=True)
 
     st.markdown("### 📊 Score Breakdown")
     score_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
@@ -172,35 +174,40 @@ if st.button("✅ Submit Exam"):
 
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("Arial", 'B', 16)
+    pdf.set_text_color(0, 102, 204)
+    pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
+    pdf.ln(10)
     pdf.set_text_color(0, 0, 0)
+    pdf.set_font("Arial", size=12)
     pdf.cell(0, 10, f"Name: {name}", ln=True)
     pdf.cell(0, 10, f"Email: {email}", ln=True)
     pdf.ln(10)
 
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(0, 10, "Top Leadership Styles:", ln=True)
+    pdf.set_font("Arial", size=12)
     for style, score in top_styles:
-        pdf.set_font("Arial", "B", 12)
         pdf.set_text_color(0, 51, 102)
-        pdf.multi_cell(0, 10, f"{style} ({score})")
-        pdf.set_font("Arial", "", 11)
+        pdf.multi_cell(0, 8, f"{style} ({score})")
         pdf.set_text_color(0, 0, 0)
-        pdf.multi_cell(0, 8, styles[style])
-        pdf.ln(5)
+        clean_desc = styles[style].encode('latin-1', 'replace').decode('latin-1')
+        pdf.multi_cell(0, 8, clean_desc)
+        pdf.ln(4)
 
-    pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 10, "Score Breakdown", ln=True)
-    pdf.set_font("Arial", "", 11)
+    pdf.set_font("Arial", 'B', 12)
+    pdf.cell(0, 10, "Score Breakdown:", ln=True)
+    pdf.set_font("Arial", size=11)
     for style, score in style_totals.items():
         pdf.cell(0, 8, f"{style}: {score}", ln=True)
-
     pdf.ln(5)
+
     if os.path.exists("radar_chart.png"):
         pdf.image("radar_chart.png", w=150)
 
-    pdf_path = "leadership_report.pdf"
-    pdf.output(pdf_path)
+    pdf.output("leadership_report.pdf")
 
-    with open(pdf_path, "rb") as f:
+    with open("leadership_report.pdf", "rb") as f:
         st.download_button(
             label="📄 Download Full PDF Report",
             data=f,
