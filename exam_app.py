@@ -210,29 +210,14 @@ if st.button("✅ Submit Exam"):
 # Radar chart with numeric labels displayed
     radar_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
     radar_df["Style"] = radar_df["Leadership Style"]
-
-    fig = px.line_polar(
-    radar_df,
-    r="Total Score",
-    theta="Style",
-    line_close=True,
-    title="Your Leadership Profile",
-    markers=True,
-    text="Total Score"  # 👈 Display numbers
-    )
-
-    fig.update_traces(
-    fill='toself',
-    line_color='green',
-    textposition='top middle'  # 👈 Position of numbers
-    )
-
+    fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True,
+                    title="Your Leadership Profile", markers=True)
+    fig.update_traces(fill='toself', line_color='green')  # Removed unsupported args
     fig.update_layout(
-    polar=dict(radialaxis=dict(visible=True, range=[0, 60])),  # Keep axis visible for better context
+    polar=dict(radialaxis=dict(visible=True, range=[0, 60])),
     showlegend=False,
     paper_bgcolor="#fff0f0"
     )
-
     st.plotly_chart(fig)
 
     # Save Radar Chart image
