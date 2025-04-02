@@ -267,3 +267,5 @@ if st.button("✅ Submit Exam"):
         )
 
     st.success("🎉 Your leadership style report is ready for download!")
+    st.markdown("<p style='font-size: 6px; color: #999999; text-align: right;'> ©http://www.skillsyouneed.com/lead/leadership-styles.html .</p>", unsafe_allow_html=True)
+
