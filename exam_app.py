@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 from fpdf import FPDF
+from PyPDF2 import PdfMerger
 import os
 import unicodedata
 
@@ -222,7 +223,14 @@ if st.button("✅ Submit Exam"):
 
     # Save Radar Chart image
     fig.write_image("radar_chart.png")
-
+    
+    def merge_pdfs(main_path, extra_path, output_path):
+    merger = PdfMerger()
+    merger.append(main_path)
+    merger.append(extra_path)
+    merger.write(output_path)
+    merger.close()
+    
     # PDF Generation (clearly WITHOUT visible scores)
     pdf = FPDF()
     pdf.add_page()
@@ -266,16 +274,19 @@ if st.button("✅ Submit Exam"):
     if os.path.exists("radar_chart.png"):
         pdf.image("radar_chart.png", w=150)
 
-    # Generate PDF clearly
-    pdf.output("leadership_report.pdf")
+    # Save the original report
+    pdf.output("Leadership Style.pdf")
 
-    # Provide Download button
-    with open("leadership_report.pdf", "rb") as f:
-        st.download_button(
-            label="📄 Download Full PDF Report",
+    # Merge it with appendix
+    merge_pdfs("Leadership Style.pdf", "appendix.pdf", "final_report.pdf")
+
+    # Offer download of the merged file
+    with open("final_report.pdf", "rb") as f:
+         st.download_button(
+            label="📥 Download Full Report (with Appendix)",
             data=f,
-            file_name="leadership_report.pdf",
+            file_name="final_report.pdf",
             mime="application/pdf"
-        )
+    )
 
     st.success("🎉 Your leadership style report is ready for download!")
