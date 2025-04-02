@@ -225,11 +225,11 @@ if st.button("✅ Submit Exam"):
     fig.write_image("radar_chart.png")
     
     def merge_pdfs(main_path, extra_path, output_path):
-    merger = PdfMerger()
-    merger.append(main_path)
-    merger.append(extra_path)
-    merger.write(output_path)
-    merger.close()
+        merger = PdfMerger()
+        merger.append(main_path)
+        merger.append(extra_path)
+        merger.write(output_path)
+        merger.close()
     
     # PDF Generation (clearly WITHOUT visible scores)
     pdf = FPDF()
