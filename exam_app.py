@@ -251,8 +251,8 @@ if st.button("✅ Submit Exam"):
 
     def merge_pdfs(main_path, extra_path, output_path):
         merger = PdfMerger()
-        merger.append(main_path)
         merger.append(extra_path)
+        merger.append(main_path)
         merger.write(output_path)
         merger.close()
 
