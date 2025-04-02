@@ -1,11 +1,14 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.io as pio
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 from PyPDF2 import PdfMerger
 import os
 import unicodedata
+
+pio.kaleido.scope.default_format = "png"
 
 def clean_pdf_text(text):
     replacements = {
@@ -20,9 +23,11 @@ def clean_pdf_text(text):
     for k, v in replacements.items():
         text = text.replace(k, v)
     return unicodedata.normalize("NFKD", text)
+
 #  Page navigation state 
 if 'page' not in st.session_state:
     st.session_state.page = 'welcome'
+
 # --- APP CONFIG ---
 st.set_page_config(page_title="Leadership Inventory", layout="centered")
 
@@ -56,10 +61,9 @@ def load_questions():
     questions_df = pd.concat(all_parts, ignore_index=True)
     return questions_df
 
-# Full leadership styles dictionary preserved
-# Leadership styles dictionary is defined here...
+# Leadership styles dictionary
 def get_leadership_styles():
-       return {
+    return {
         "Visionary/Authoritative": """Within the 6 leadership styles, you lead with a Visionary style.
 
 You lead by painting a clear and inspiring vision of the future. You naturally say, “Come with me” — inviting others to follow your lead with confidence.
@@ -131,7 +135,7 @@ Aspects to reflect upon is how do you engage with a team and inspire them to per
 
 **Ask your team these questions / do a 360 degree report on Workday to understand your blind spots.**"""
     }
-    
+
 # --- TOP LEFT LOGO ---
 st.markdown("""
 <div style='position: absolute; top: 10px; left: 10px;'>
@@ -139,18 +143,16 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- WELCOME MESSAGE (without start button, directly info) ---
+# --- WELCOME MESSAGE ---
 st.image("download.png", width=150)
 st.markdown("<h1 style='text-align: center;'>🧭 Dynamic Leadership Inventory</h1>", unsafe_allow_html=True)
 st.markdown("""
     Welcome! This tool helps you discover your dominant leadership style.  
     Please answer the following questions honestly. Once submitted, you'll receive a personalized leadership profile and a downloadable report with insights.
 """)
-
-# Clear visible spacing
 st.markdown("<br><br>", unsafe_allow_html=True)
 
-# --- USER DETAILS (Appears Directly Below with Distance) ---
+# --- USER DETAILS ---
 st.markdown("### 👤 Participant Information")
 name = st.text_input("Your Name")
 email = st.text_input("Your Email")
@@ -162,21 +164,17 @@ if password != "leader2024":
 
 st.markdown("---")
 
-# --- QUESTIONS ---
 questions_df = load_questions()
 styles = get_leadership_styles()
-st.markdown("---")
-st.header("📋 Rate the Following Statements (1 = Strongly Disagree, 5 = Strongly Agree)")
 
+st.header("📋 Rate the Following Statements (1 = Strongly Disagree, 5 = Strongly Agree)")
 responses = []
 for index, row in questions_df.iterrows():
     score = st.slider(f"{int(row['Q_No'])}. {row['Question']}", 1, 5, 3)
     responses.append((row['Part'], score))
-    
-styles_dict = get_leadership_styles()
+
 # --- ON SUBMIT ---
 if st.button("✅ Submit Exam"):
-    # Scoring logic (keep this internal, don't display)
     part_scores = {}
     for part, score in responses:
         part_scores[part] = part_scores.get(part, 0) + score
@@ -194,102 +192,78 @@ if st.button("✅ Submit Exam"):
     top_styles = sorted(style_totals.items(), key=lambda x: x[1], reverse=True)[:1]
     final_style = top_styles[0][0]
 
-    styles_dict = get_leadership_styles()
-
-    # Display clearly WITHOUT score values
     st.markdown("---")
     st.subheader("🎯 Your Leadership Style")
-
     for style, _ in top_styles:
         st.markdown(f"<h4 style='color:#2e7d32;'>{style}</h4>", unsafe_allow_html=True)
         st.markdown(f"""
         <div style='background-color:#e6ffe6; padding:15px; border-left: 6px solid green;'>
-            {styles_dict[style]}
+            {styles[style]}
         </div>
         """, unsafe_allow_html=True)
 
-# Radar chart with numeric labels displayed
     radar_df = pd.DataFrame(list(style_totals.items()), columns=["Leadership Style", "Total Score"])
     radar_df["Style"] = radar_df["Leadership Style"]
     fig = px.line_polar(radar_df, r="Total Score", theta="Style", line_close=True,
-                    title="Your Leadership Profile", markers=True)
-    fig.update_traces(fill='toself', line_color='green')  # Removed unsupported args
+                        title="Your Leadership Profile", markers=True)
+    fig.update_traces(fill='toself', line_color='green')
     fig.update_layout(
-    polar=dict(radialaxis=dict(visible=True, range=[0, 60])),
-    showlegend=False,
-    paper_bgcolor="#fff0f0"
+        polar=dict(radialaxis=dict(visible=True, range=[0, 60])),
+        showlegend=False,
+        paper_bgcolor="#fff0f0"
     )
     st.plotly_chart(fig)
-
-    # Save Radar Chart image
     fig.write_image("radar_chart.png")
-    
 
-    
-# --- PDF Generation (WITHOUT visible scores) ---
-pdf = FPDF()
-pdf.add_page()
-
-# Logo
-pdf.image("download.png", x=10, y=8, w=40)
-pdf.ln(25)
-
-# Title
-pdf.set_font("Arial", 'B', 16)
-pdf.set_text_color(135, 206, 235)
-pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
-pdf.ln(10)
-
-# Participant Info
-pdf.set_font("Arial", size=12)
-pdf.set_text_color(0, 0, 0)
-pdf.cell(0, 10, f"Name: {name}", ln=True)
-pdf.cell(0, 10, f"Email: {email}", ln=True)
-pdf.ln(10)
-
-# Top Leadership Style Heading
-pdf.set_font("Arial", 'B', 14)
-pdf.cell(0, 10, "Top Leadership Style:", ln=True)
-pdf.ln(6)
-
-# Actual Leadership Style (WITHOUT score)
-for style, _ in top_styles:
-    pdf.set_font("Arial", 'B', 12)
-    pdf.set_text_color(0, 51, 102)
-    pdf.multi_cell(0, 8, clean_pdf_text(f"{style}"))
-    pdf.ln(2)
-
+    # --- PDF Generation ---
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.image("download.png", x=10, y=8, w=40)
+    pdf.ln(25)
+    pdf.set_font("Arial", 'B', 16)
+    pdf.set_text_color(135, 206, 235)
+    pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
+    pdf.ln(10)
     pdf.set_font("Arial", size=12)
     pdf.set_text_color(0, 0, 0)
-    clean_desc = clean_pdf_text(styles_dict[style])
-    pdf.multi_cell(0, 8, clean_desc)
-    pdf.ln(4)
+    pdf.cell(0, 10, f"Name: {name}", ln=True)
+    pdf.cell(0, 10, f"Email: {email}", ln=True)
+    pdf.ln(10)
+    pdf.set_font("Arial", 'B', 14)
+    pdf.cell(0, 10, "Top Leadership Style:", ln=True)
+    pdf.ln(6)
 
-# Radar Chart Image
-if os.path.exists("radar_chart.png"):
-    pdf.image("radar_chart.png", w=150)
+    for style, _ in top_styles:
+        pdf.set_font("Arial", 'B', 12)
+        pdf.set_text_color(0, 51, 102)
+        pdf.multi_cell(0, 8, clean_pdf_text(f"{style}"))
+        pdf.ln(2)
+        pdf.set_font("Arial", size=12)
+        pdf.set_text_color(0, 0, 0)
+        clean_desc = clean_pdf_text(styles[style])
+        pdf.multi_cell(0, 8, clean_desc)
+        pdf.ln(4)
 
-# Save current report as "appendix.pdf"
-pdf.output("appendix.pdf")
+    if os.path.exists("radar_chart.png"):
+        pdf.image("radar_chart.png", w=150)
 
-# --- Merge with external PDF "Leadership Style.pdf" ---
-def merge_pdfs(main_path, extra_path, output_path):
-    merger = PdfMerger()
-    merger.append(main_path)     # existing Leadership Style.pdf
-    merger.append(extra_path)    # newly created appendix
-    merger.write(output_path)
-    merger.close()
+    pdf.output("appendix.pdf")
 
-# Merge now
-merge_pdfs("Leadership Style.pdf", "appendix.pdf", "Leadership Report.pdf")
+    def merge_pdfs(main_path, extra_path, output_path):
+        merger = PdfMerger()
+        merger.append(main_path)
+        merger.append(extra_path)
+        merger.write(output_path)
+        merger.close()
 
-# Download merged PDF
-with open("Leadership Report.pdf", "rb") as f:
-    st.download_button(
-        label="📥 Download Full Report (with Appendix)",
-        data=f,
-        file_name="Leadership Report.pdf",
-        mime="application/pdf"
-    )
+    merge_pdfs("Leadership Style.pdf", "appendix.pdf", "Leadership Report.pdf")
+
+    with open("Leadership Report.pdf", "rb") as f:
+        st.download_button(
+            label="📥 Download Full Report (with Appendix)",
+            data=f,
+            file_name="Leadership Report.pdf",
+            mime="application/pdf"
+        )
 
     st.success("🎉 Your leadership style report is ready for download!")
