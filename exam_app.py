@@ -224,69 +224,72 @@ if st.button("✅ Submit Exam"):
     # Save Radar Chart image
     fig.write_image("radar_chart.png")
     
-    def merge_pdfs(main_path, extra_path, output_path):
-        merger = PdfMerger()
-        merger.append(main_path)
-        merger.append(extra_path)
-        merger.write(output_path)
-        merger.close()
+
     
-    # PDF Generation (clearly WITHOUT visible scores)
-    pdf = FPDF()
-    pdf.add_page()
+# --- PDF Generation (WITHOUT visible scores) ---
+pdf = FPDF()
+pdf.add_page()
 
-    # Logo
-    pdf.image("download.png", x=10, y=8, w=40)
-    pdf.ln(25)
+# Logo
+pdf.image("download.png", x=10, y=8, w=40)
+pdf.ln(25)
 
-    # Title
-    pdf.set_font("Arial", 'B', 16)
-    pdf.set_text_color(135, 206, 235)
-    pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
-    pdf.ln(10)
+# Title
+pdf.set_font("Arial", 'B', 16)
+pdf.set_text_color(135, 206, 235)
+pdf.cell(0, 10, "Leadership Inventory Report", ln=True, align="C")
+pdf.ln(10)
 
-    # Participant Info
+# Participant Info
+pdf.set_font("Arial", size=12)
+pdf.set_text_color(0, 0, 0)
+pdf.cell(0, 10, f"Name: {name}", ln=True)
+pdf.cell(0, 10, f"Email: {email}", ln=True)
+pdf.ln(10)
+
+# Top Leadership Style Heading
+pdf.set_font("Arial", 'B', 14)
+pdf.cell(0, 10, "Top Leadership Style:", ln=True)
+pdf.ln(6)
+
+# Actual Leadership Style (WITHOUT score)
+for style, _ in top_styles:
+    pdf.set_font("Arial", 'B', 12)
+    pdf.set_text_color(0, 51, 102)
+    pdf.multi_cell(0, 8, clean_pdf_text(f"{style}"))
+    pdf.ln(2)
+
     pdf.set_font("Arial", size=12)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(0, 10, f"Name: {name}", ln=True)
-    pdf.cell(0, 10, f"Email: {email}", ln=True)
-    pdf.ln(10)
+    clean_desc = clean_pdf_text(styles_dict[style])
+    pdf.multi_cell(0, 8, clean_desc)
+    pdf.ln(4)
 
-    # Top Leadership Style Heading
-    pdf.set_font("Arial", 'B', 14)
-    pdf.cell(0, 10, "Top Leadership Style:", ln=True)
-    pdf.ln(6)
+# Radar Chart Image
+if os.path.exists("radar_chart.png"):
+    pdf.image("radar_chart.png", w=150)
 
-    # Actual Leadership Style (WITHOUT score)
-    for style, _ in top_styles:
-        pdf.set_font("Arial", 'B', 12)
-        pdf.set_text_color(0, 51, 102)
-        pdf.multi_cell(0, 8, clean_pdf_text(f"{style}"))
-        pdf.ln(2)
+# Save current report as "appendix.pdf"
+pdf.output("appendix.pdf")
 
-        pdf.set_font("Arial", size=12)
-        pdf.set_text_color(0, 0, 0)
-        clean_desc = clean_pdf_text(styles_dict[style])
-        pdf.multi_cell(0, 8, clean_desc)
-        pdf.ln(4)
+# --- Merge with external PDF "Leadership Style.pdf" ---
+def merge_pdfs(main_path, extra_path, output_path):
+    merger = PdfMerger()
+    merger.append(main_path)     # existing Leadership Style.pdf
+    merger.append(extra_path)    # newly created appendix
+    merger.write(output_path)
+    merger.close()
 
-    # Radar Chart Image
-    if os.path.exists("radar_chart.png"):
-        pdf.image("radar_chart.png", w=150)
+# Merge now
+merge_pdfs("Leadership Style.pdf", "appendix.pdf", "Leadership Report.pdf")
 
-    # Save the original report
-    pdf.output("Leadership Style.pdf")
-
-    # Merge it with appendix
-    merge_pdfs("Leadership Style.pdf", "appendix.pdf", "final_report.pdf")
-
-    # Offer download of the merged file
-    with open("final_report.pdf", "rb") as f:
-         st.download_button(
-            label="📥 Download Full Report (with Appendix)",
-            data=f,
-            file_name="final_report.pdf",
-            mime="application/pdf"
+# Download merged PDF
+with open("Leadership Report.pdf", "rb") as f:
+    st.download_button(
+        label="📥 Download Full Report (with Appendix)",
+        data=f,
+        file_name="Leadership Report.pdf",
+        mime="application/pdf"
     )
 
     st.success("🎉 Your leadership style report is ready for download!")
